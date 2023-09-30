@@ -1,0 +1,137 @@
+openapi: 3.0.3
+info:
+  title: Swagger Grocery Items - OpenAPI 3.0
+  description: |-
+    This is a sample Grocery Item Server based on the OpenAPI 3.0 specification.
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: gitanjalikhabale@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+servers:
+  - url: http://localhost:8080/api/items
+tags:
+  - name: item
+    description: Everything about grocery items
+paths:
+  /item:
+    put:
+      tags:
+        - item
+      summary: Update an existing grocery item
+      description: Update an existing grocery item by Id
+      operationId: updateGroceryItem
+      requestBody:
+        description: Update an existent grocery item in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroceryItemDto'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroceryItemDto'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Grocery Item not found
+        '405':
+          description: Validation exception
+    post:
+      tags:
+        - item
+      summary: Add a new grocery item to the store
+      description: Add a new grocery item to the store
+      operationId: addGroceryItem
+      requestBody:
+        description: Create a new grocery item in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroceryItemDto'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroceryItemDto'
+        '405':
+          description: Invalid input
+  /item/{itemId}:
+    get:
+      tags:
+        - item
+      summary: Find grocery item by ID
+      description: Returns a single grocery item
+      operationId: getGroceryItemById
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of grocery item to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroceryItemDto'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Grocery Item not found
+    delete:
+      tags:
+        - item
+      summary: Deletes a grocery item
+      description: delete a grocery item
+      operationId: deleteGroceryItem
+      parameters:
+        - name: itemId
+          in: path
+          description: Grocery Item id to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid grocery item value
+        '204':
+          description: No Content, successful operation
+components:
+  schemas:
+    GroceryItemDto:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 10
+        name:
+          type: string
+          example: 198772
+        quantity:
+          type: integer
+          format: int32
+          example: 7
+        category:
+          type: string
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
